@@ -12,16 +12,29 @@
 
 <script>
 import HelloWorld from "./components/HelloWorld.vue";
-import axios from "axios";
+//import axios from "axios";
 export default {
   name: "App",
   components: {
     HelloWorld,
   },
   created() {
-    axios.get("http://localhost:3000/login").then((res) => {
-      console.log(res);
-    });
+    // axios.get("http://localhost:3000/login").then((res) => {
+    //   console.log(res);
+    // });
+    const webSocket = new WebSocket("ws://localhost:8088");
+    webSocket.onopen = () => {
+      console.log("连接成功");
+    };
+    webSocket.onmessage = (msg) => {
+      console.log(msg);
+    };
+    webSocket.onclose = () => {
+      console.log("关闭连接");
+    };
+    setTimeout(() => {
+      webSocket.send("hello i am demo.html");
+    }, 1000);
   },
 };
 </script>
